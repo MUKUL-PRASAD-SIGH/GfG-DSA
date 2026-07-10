@@ -16,22 +16,31 @@ class Node {
 class Solution {
   public:
     Node* delPos(Node* head, int x) {
-        Node* temp=head;
-        // code here
-        for(int i=1;i<x;i++)
-        {
-            temp=temp->next;
+        if(head==NULL || head->next==NULL) return NULL;
+        Node* ref=head;
+           if(x == 1){
+            Node* temp = head;
+            head = head->next;
+            if(head) head->prev = NULL;
+            delete temp;
+            return head;
         }
+        for(int i=0;i<x-1;i++){
+            ref=ref->next;
+        }
+        if(ref->prev!=NULL){
+        ref->prev->next=ref->next;
+        }
+        if(ref->next!=NULL){
+        ref->next->prev=ref->prev;
+        }
+        delete ref;
+        return head;
+        //Node *temp=head;
+        //head=head->next;
+        //temp->next=NULL;
         
-        if(temp->prev != NULL)
-            temp->prev->next = temp->next;
-        else
-            head = temp->next;
-
-        if(temp->next != NULL)
-            temp->next->prev = temp->prev;
-        free(temp);
-       return head; 
+        
     }
     
 };
