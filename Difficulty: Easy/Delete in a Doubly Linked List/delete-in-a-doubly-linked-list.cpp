@@ -1,46 +1,42 @@
-/* Structure of Node
-class Node {
-  public:
-    int data;
-    Node *next;
-    Node *prev;
-
-    Node(int val) {
-        data = val;
-        this->next = NULL;
-        this->prev = NULL;
-    }
-};
-*/
-
 class Solution {
   public:
     Node* delPos(Node* head, int x) {
-        if(head==NULL || head->next==NULL) return NULL;
-        Node* ref=head;
-           if(x == 1){
-            Node* temp = head;
-            head = head->next;
-            if(head) head->prev = NULL;
+        
+        Node* temp = head;
+        int cnt = 1;
+        
+        while (temp != NULL && cnt < x) {
+            temp = temp->next;
+            cnt++;
+        }
+        
+        if (temp == NULL)
+            return head;
+        
+        // head node
+        if (temp->prev == NULL) {
+            head = temp->next;
+            
+            if (head != NULL)
+                head->prev = NULL;
+            
             delete temp;
             return head;
         }
-        for(int i=0;i<x-1;i++){
-            ref=ref->next;
+        
+        // tail node
+        if (temp->next == NULL) {
+            temp->prev->next = NULL;
+            delete temp;
+            return head;
         }
-        if(ref->prev!=NULL){
-        ref->prev->next=ref->next;
-        }
-        if(ref->next!=NULL){
-        ref->next->prev=ref->prev;
-        }
-        delete ref;
+        
+        // middle node — YOUR LOGIC
+        temp->prev->next = temp->next;
+        temp->next->prev = temp->prev;
+        
+        delete temp;
+        
         return head;
-        //Node *temp=head;
-        //head=head->next;
-        //temp->next=NULL;
-        
-        
     }
-    
 };
